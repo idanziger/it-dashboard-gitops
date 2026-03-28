@@ -23,6 +23,9 @@ spec:
       labels:
         app: it-dashboard
     spec:
+      # Credentials for pulling the image from private ghcr.io
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       containers:
         - name: it-dashboard
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
