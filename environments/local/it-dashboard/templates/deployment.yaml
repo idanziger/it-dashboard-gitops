@@ -39,12 +39,20 @@ spec:
               value: {{ .Values.env.NODE_ENV | quote }}
             - name: AUTH_TRUST_HOST
               value: {{ .Values.env.AUTH_TRUST_HOST | quote }}
-            # Secrets are injected from a Kubernetes Secret object (not hardcoded here)
+            # Path where the Google service account JSON is mounted inside the container
+            - name: GOOGLE_SERVICE_ACCOUNT_KEY_PATH
+              value: "/secrets/google-service-account.json"
+            # All secrets pulled from the Kubernetes Secret object
             - name: NEXTAUTH_SECRET
               valueFrom:
                 secretKeyRef:
                   name: it-dashboard-secrets
                   key: NEXTAUTH_SECRET
+            - name: AUTH_ALLOWED_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: it-dashboard-secrets
+                  key: AUTH_ALLOWED_EMAIL
             - name: GOOGLE_CLIENT_ID
               valueFrom:
                 secretKeyRef:
@@ -55,8 +63,35 @@ spec:
                 secretKeyRef:
                   name: it-dashboard-secrets
                   key: GOOGLE_CLIENT_SECRET
-            - name: AUTH_ALLOWED_EMAIL
+            - name: GOOGLE_ADMIN_IMPERSONATE_EMAIL
               valueFrom:
                 secretKeyRef:
                   name: it-dashboard-secrets
-                  key: AUTH_ALLOWED_EMAIL
+                  key: GOOGLE_ADMIN_IMPERSONATE_EMAIL
+            - name: SENTINELONE_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: it-dashboard-secrets
+                  key: SENTINELONE_BASE_URL
+            - name: SENTINELONE_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: it-dashboard-secrets
+                  key: SENTINELONE_API_TOKEN
+            - name: JUMPCLOUD_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: it-dashboard-secrets
+                  key: JUMPCLOUD_API_KEY
+          # Mount the Google service account JSON file into the container
+          volumeMounts:
+            - name: google-sa-key
+              mountPath: /secrets
+              readOnly: true
+      volumes:
+        - name: google-sa-key
+          secret:
+            secretName: it-dashboard-secrets
+            items:
+              - key: google-service-account.json
+                path: google-service-account.json
