@@ -1,0 +1,42 @@
+# A Deployment tells Kubernetes:
+# - what container image to run
+# - how many replicas (copies) to keep running
+# - what environment variables to inject
+# - what port the container listens on
+#
+# The {{ .Values.xxx }} syntax is Helm templating — it reads from values.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: it-dashboard
+  namespace: it-dashboard
+  labels:
+    app: it-dashboard
+spec:
+  replicas: {{ .Values.app.replicas }}
+  selector:
+    matchLabels:
+      app: it-dashboard
+  template:
+    metadata:
+      labels:
+        app: it-dashboard
+    spec:
+      containers:
+        - name: it-dashboard
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.app.port }}
+          env:
+            - name: NEXTAUTH_URL
+              value: {{ .Values.env.NEXTAUTH_URL | quote }}
+            - name: NODE_ENV
+              value: {{ .Values.env.NODE_ENV | quote }}
+            # Secrets are injected from a Kubernetes Secret object (not hardcoded here)
+            - name: NEXTAUTH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: it-dashboard-secrets
+                  key: NEXTAUTH_SECRET

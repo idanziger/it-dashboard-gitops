@@ -1,0 +1,18 @@
+# This file is the single source of config for the deployment.
+# The CI pipeline will automatically update the image.tag value
+# every time a new version is built and pushed.
+
+image:
+  repository: ghcr.io/idanziger/it-dashboard
+  tag: "latest"         # CI pipeline replaces this with the git commit hash
+  pullPolicy: Always    # Always pull the latest version of the tag
+
+app:
+  port: 3000            # The port your Next.js app listens on
+  replicas: 1           # How many copies to run (1 is fine for local learning)
+
+# Environment variables injected into the container at runtime
+# Secrets (API keys etc) are handled separately via Kubernetes Secrets
+env:
+  NEXTAUTH_URL: "http://localhost:3000"
+  NODE_ENV: "production"

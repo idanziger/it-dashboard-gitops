@@ -1,0 +1,21 @@
+# A Service gives your pods a stable network address inside Kubernetes.
+# Without this, pods are unreachable — they have random IPs that change on restart.
+#
+# Type: ClusterIP means it's only reachable inside the cluster.
+# We access it from our laptop using kubectl port-forward (like a tunnel).
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: it-dashboard
+  namespace: it-dashboard
+  labels:
+    app: it-dashboard
+spec:
+  type: ClusterIP
+  selector:
+    app: it-dashboard     # Routes traffic to pods with this label
+  ports:
+    - protocol: TCP
+      port: 3000          # Port the Service listens on
+      targetPort: 3000    # Port on the container to forward to

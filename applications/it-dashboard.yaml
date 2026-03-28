@@ -1,0 +1,31 @@
+# This is an ArgoCD Application CRD (Custom Resource Definition).
+# It is a POINTER — it tells ArgoCD:
+#   "Watch THIS git repo, at THIS folder path,
+#    and make sure the cluster ALWAYS matches what's there."
+#
+# When the CI pipeline updates values.yaml with a new image tag,
+# ArgoCD detects the change and automatically redeploys.
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: it-dashboard
+  namespace: argocd          # ArgoCD itself lives in the argocd namespace
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/idanziger/it-dashboard-gitops.git
+    targetRevision: main
+    path: environments/local/it-dashboard    # The folder ArgoCD watches
+
+  destination:
+    server: https://kubernetes.default.svc   # "this cluster" (minikube)
+    namespace: it-dashboard                  # Deploy into this namespace
+
+  syncPolicy:
+    automated:
+      prune: true      # Delete resources removed from git
+      selfHeal: true   # Revert any manual changes made directly in the cluster
+    syncOptions:
+      - CreateNamespace=true   # Auto-create the it-dashboard namespace if it doesn't exist
