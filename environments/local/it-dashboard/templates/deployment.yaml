@@ -42,3 +42,13 @@ spec:
                 secretKeyRef:
                   name: it-dashboard-secrets
                   key: NEXTAUTH_SECRET
+            - name: GOOGLE_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: it-dashboard-secrets
+                  key: GOOGLE_CLIENT_ID
+            - name: GOOGLE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: it-dashboard-secrets
+                  key: GOOGLE_CLIENT_SECRET
