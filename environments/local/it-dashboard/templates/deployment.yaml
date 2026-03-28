@@ -34,6 +34,8 @@ spec:
               value: {{ .Values.env.NEXTAUTH_URL | quote }}
             - name: NODE_ENV
               value: {{ .Values.env.NODE_ENV | quote }}
+            - name: AUTH_TRUST_HOST
+              value: {{ .Values.env.AUTH_TRUST_HOST | quote }}
             # Secrets are injected from a Kubernetes Secret object (not hardcoded here)
             - name: NEXTAUTH_SECRET
               valueFrom:
