@@ -47,7 +47,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: it-dashboard-secrets
-                  key: NEXTAUTH_SECRET
+                  key: NEXTAUTH_SECRET_OOPS
             - name: AUTH_ALLOWED_EMAIL
               valueFrom:
                 secretKeyRef:
