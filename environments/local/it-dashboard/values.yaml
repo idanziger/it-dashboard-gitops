@@ -4,7 +4,7 @@
 
 image:
   repository: ghcr.io/idanziger/it-dashboard
-  tag: "this-tag-does-not-exist"         # CI pipeline replaces this with the git commit hash
+  tag: "532a28f0b6449cc9201df891641842bf9deefbf9"         # CI pipeline replaces this with the git commit hash
   pullPolicy: Always    # Always pull the latest version of the tag
 
 app:
