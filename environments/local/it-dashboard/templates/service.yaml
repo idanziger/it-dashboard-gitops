@@ -18,4 +18,4 @@ spec:
   ports:
     - protocol: TCP
       port: 3000          # Port the Service listens on
-      targetPort: 3000    # Port on the container to forward to
+      targetPort: 3001    # Intentional training break: wrong container port
