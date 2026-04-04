@@ -4,7 +4,7 @@
 
 image:
   repository: ghcr.io/idanziger/it-dashboard
-  tag: "3cec78c0a423fce28747664f6ef977b685b66ebf"         # CI pipeline replaces this with the git commit hash
+  tag: "d5e0cd2c0a30f0d21833521144fc278061d05d8e"         # CI pipeline replaces this with the git commit hash
   pullPolicy: Always    # Always pull the latest version of the tag
 
 app:
